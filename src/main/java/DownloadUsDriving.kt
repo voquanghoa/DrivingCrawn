@@ -1,5 +1,6 @@
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import java.nio.file.Paths
 
 fun main() {
 
@@ -32,12 +33,6 @@ fun main() {
         return Question(title, answers, correct, explanation, image)
     }
 
-    fun downloadTopics(): List<Topic>{
-        val url = "https://usdriving.net/qcategory_list.php"
-        val doc = Jsoup.connect(url).get().body()
-        return doc.select("table tr").map { it.getTopic() }
-    }
-
     fun Topic.download(): Questions{
         val url = "https://usdriving.net/${this.link}"
         val doc = Jsoup.connect(url).get().body()
@@ -51,15 +46,27 @@ fun main() {
         return Questions(this.text, questions)
     }
 
+    fun downloadTopics(): List<Topic>{
+        val url = "https://usdriving.net/qcategory_list.php"
+        val doc = Jsoup.connect(url).get().body()
+        return doc.select("table tr").map { it.getTopic() }
+    }
+
+    Paths.get("download", "usdriving").toString().createFolderIfNotExist()
+
     val trs = downloadTopics()
 
     trs.forEach {
         val questions = it.download()
 
-        questions.saveTo("${it.text.toSlug()}.json")
+        val jsonPath = Paths.get("download", "usdriving", "${it.text.toSlug()}.json").toString()
 
-        println("Download ${it.text} to ${it.text.toSlug() + ".json"}")
+        questions.saveTo(jsonPath)
+
+        println("Download ${it.text} to $jsonPath")
     }
 
     println(trs.joinToString("\n"))
+
+    println("DONE")
 }
