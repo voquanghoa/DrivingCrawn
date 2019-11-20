@@ -104,7 +104,7 @@ fun main() {
     trs.forEach {
         val questions = it.download()
 
-        questions.saveTo("download/${it.text.toSlug()}.json")
+        questions.saveTo("${it.text.toSlug()}.json")
 
         println("Download ${it.text} to ${it.text.toSlug() + ".json"}")
     }
