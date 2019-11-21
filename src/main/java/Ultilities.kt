@@ -27,10 +27,11 @@ fun String.downloadAsBytes(): ByteArray{
 }
 
 fun String.downloadAsBase64(): String{
-    try {
-        return String(Base64.getEncoder().encode(downloadAsBytes()))
+    return try {
+        String(Base64.getEncoder().encode(downloadAsBytes()))
     }catch (ex: Exception){
-        throw ex
+        println("The file $this could not be downloaded due to the error ${ex.message}")
+        ""
     }
 }
 
