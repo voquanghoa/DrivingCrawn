@@ -30,6 +30,10 @@ fun String.downloadAsBase64(): String{
     return String(Base64.getEncoder().encode(downloadAsBytes()))
 }
 
+fun String.readFile(): String{
+    return File(this).readText()
+}
+
 fun String.createFolderIfNotExist() {
     val file = File(this)
     if (!file.exists()) {
@@ -67,3 +71,5 @@ fun Any.saveTo(path: String){
     val json = Gson().toJson(this)
     File(path).writeText(json)
 }
+
+fun newGuid() = UUID.randomUUID().toString().replace("-", "")
