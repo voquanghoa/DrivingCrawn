@@ -27,12 +27,7 @@ fun String.downloadAsBytes(): ByteArray{
 }
 
 fun String.downloadAsBase64(): String{
-    return try {
-        String(Base64.getEncoder().encode(downloadAsBytes()))
-    }catch (ex: Exception){
-        println("The file $this could not be downloaded due to the error ${ex.message}")
-        ""
-    }
+    return String(Base64.getEncoder().encode(downloadAsBytes()))
 }
 
 fun String.createFolderIfNotExist() {

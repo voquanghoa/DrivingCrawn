@@ -1,22 +1,10 @@
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import java.lang.Exception
 import java.nio.file.Paths
 
 fun main() {
     val states = mapOf(
-            "alabama" to "Alabama",
-            "alaska" to "Alaska",
-            "arizona" to "Arizona",
-            "arkansas" to "Arkansas",
-            "california" to "California",
-            "colorado" to "Colorado",
-            "connecticut" to "Connecticut",
-            "delaware" to "Delaware",
-            "district-of-columbia" to "District Of Columbia",
-            "florida" to "Florida",
-            "georgia" to "Georgia",
-            "hawaii" to "Hawaii",
-            "idaho" to "Idaho",
             "illinois" to "Illinois",
             "indiana" to "Indiana",
             "iowa" to "Iowa",
@@ -70,7 +58,11 @@ fun main() {
         var image = ""
 
         this.select(".answer .images img").firstOrNull()?.also {
-            image = it.attr("src").downloadAsBase64()
+            try{
+                image = it.attr("src").downloadAsBase64()
+            }catch (ex: Exception){
+                println("The image ${it.attr("src")} from ${this.ownerDocument().location()} could not be downloaded due to the error ${ex.message}")
+            }
         }
 
         return Question(title, answers, correct, explanation, image)
