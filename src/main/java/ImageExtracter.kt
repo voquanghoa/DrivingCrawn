@@ -14,21 +14,16 @@ fun main() {
         val questions = Gson().fromJson(json, Questions::class.java)
         questions.questions.forEach {
             if(it.images.length > 40){
-                try{
-                    val binary = Base64.getDecoder().decode(it.images)
-                    val stream = ByteArrayInputStream(binary)
-                    val input = ImageIO.createImageInputStream(stream)
-                    val imageReaders = ImageIO.getImageReaders(input)
-                    val next = imageReaders.next()
+                val binary = Base64.getDecoder().decode(it.images)
+                val stream = ByteArrayInputStream(binary)
+                val input = ImageIO.createImageInputStream(stream)
+                val imageReaders = ImageIO.getImageReaders(input)
+                val next = imageReaders.next()
 
-                    it.images = "${newGuid()}.${next.formatName}"
-                    println("Create image:: ${ it.images }")
+                it.images = "${newGuid()}.${next.formatName}"
+                println("Create image:: ${ it.images }")
 
-                    Paths.get(imageDir, it.images).toFile().writeBytes(binary)
-                }
-                catch (ex: Exception){
-                    println(ex)
-                }
+                Paths.get(imageDir, it.images).toFile().writeBytes(binary)
             }
         }
 
