@@ -61,7 +61,7 @@ fun main() {
             try{
                 image = it.attr("src").downloadAsBase64()
             }catch (ex: Exception){
-                println("The image ${it.attr("src")} from ${this.ownerDocument().location()} could not be downloaded due to the error ${ex.message}")
+                println("The image ${it.attr("src")} in question $title from ${this.ownerDocument().location()} could not be downloaded due to the error ${ex.message}")
             }
         }
 
