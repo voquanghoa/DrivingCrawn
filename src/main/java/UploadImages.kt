@@ -53,9 +53,10 @@ fun main() {
 
             val blob = storage.create(blobInfo, bytes)
 
-            println("Uploaded $image -> ${blob.mediaLink}")
-
             result.uploads.add(Upload(image, blob.mediaLink))
+
+            println("${result.uploads.size}/${images.size} Uploaded $image -> ${blob.mediaLink}")
+
             result.saveTo(uploadResultPath)
         }
     }
