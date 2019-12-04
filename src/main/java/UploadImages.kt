@@ -59,6 +59,8 @@ fun main() {
 
             result.saveTo(uploadResultPath)
         }
+
+        println("Upload done!!!!")
     }
 
 }
