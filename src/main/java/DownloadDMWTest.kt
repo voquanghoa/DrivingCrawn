@@ -4,46 +4,6 @@ import java.lang.Exception
 import java.nio.file.Paths
 
 fun main() {
-    val states = mapOf(
-            "illinois" to "Illinois",
-            "indiana" to "Indiana",
-            "iowa" to "Iowa",
-            "kansas" to "Kansas",
-            "kentucky" to "Kentucky",
-            "louisiana" to "Louisiana",
-            "maine" to "Maine",
-            "maryland" to "Maryland",
-            "massachusetts" to "Massachusetts",
-            "michigan" to "Michigan",
-            "minnesota" to "Minnesota",
-            "mississippi" to "Mississippi",
-            "missouri" to "Missouri",
-            "montana" to "Montana",
-            "nebraska" to "Nebraska",
-            "nevada" to "Nevada",
-            "new-hampshire" to "New Hampshire",
-            "new-jersey" to "New Jersey",
-            "new-mexico" to "New Mexico",
-            "new-york" to "New York",
-            "north-carolina" to "North Carolina",
-            "north-dakota" to "North Dakota",
-            "ohio" to "Ohio",
-            "oklahoma" to "Oklahoma",
-            "oregon" to "Oregon",
-            "pennsylvania" to "Pennsylvania",
-            "rhode-island" to "Rhode Island",
-            "south-carolina" to "South Carolina",
-            "south-dakota" to "South Dakota",
-            "tennessee" to "Tennessee",
-            "texas" to "Texas",
-            "utah" to "Utah",
-            "vermont" to "Vermont",
-            "virginia" to "Virginia",
-            "washington" to "Washington",
-            "west-virginia" to "West Virginia",
-            "wisconsin" to "Wisconsin",
-            "wyoming" to "Wyoming"
-    )
     val types = mapOf(
             "" to "Car",
             "motorcycle/" to "Motorcycle",
@@ -96,13 +56,13 @@ fun main() {
     }
 
     fun downloadQuestions(state: String, type: String): Int{
-        val stateFolder = Paths.get("download", "dmw", states[state]).toString()
+        val stateFolder = Paths.get("download", "dmw", Common.states[state]).toString()
         stateFolder.createFolderIfNotExist()
 
         val outputFolder = Paths.get(stateFolder, types[type]).toString()
         outputFolder.createFolderIfNotExist()
 
-        println("Downloading ${states[state]} ${types[type]}")
+        println("Downloading ${Common.states[state]} ${types[type]}")
 
         var test = 0
 
@@ -112,7 +72,7 @@ fun main() {
                 val jsonPath = Paths.get(outputFolder, "test_$test.json").toString()
                 if(jsonPath.fileExist()) continue
 
-                println("Downloading ${states[state]} ${types[type]} test_$test.json")
+                println("Downloading ${Common.states[state]} ${types[type]} test_$test.json")
 
                 val questions = downloadQuestions(state, type, test, 1)
                 questions.saveTo(jsonPath)
@@ -128,14 +88,14 @@ fun main() {
     Paths.get("download", "dmw").toString().createFolderIfNotExist()
 
     val summaries = mutableListOf<StateSummary>()
-    states.keys.forEach {
+    Common.states.keys.forEach {
         state ->
         run {
             val sums = mutableListOf<TypeSummary>()
             types.keys.forEach {
                 sums.add(TypeSummary(types[it]!!, downloadQuestions(state, it)))
             }
-            summaries.add(StateSummary(states[state]!!, sums))
+            summaries.add(StateSummary(Common.states[state]!!, sums))
         }
     }
 

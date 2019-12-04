@@ -30,6 +30,14 @@ fun String.downloadAsBase64(): String{
     return String(Base64.getEncoder().encode(downloadAsBytes()))
 }
 
+fun String.renameTo(newName: String){
+    File(this).renameTo(File(newName))
+}
+
+fun String.readFileAsBytes(): ByteArray{
+    return File(this).readBytes()
+}
+
 fun String.readFile(): String{
     return File(this).readText()
 }
