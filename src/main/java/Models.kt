@@ -10,3 +10,7 @@ data class Questions(var title: String, var questions: List<Question>)
 data class TypeSummary(var type: String, var count: Int)
 data class StateSummary(var state: String, var summaries: List<TypeSummary>)
 data class Summary(var summaries: List<StateSummary>)
+
+data class ExtractedState(val id: String, val name: String, val count: Int)
+
+data class ExtractedData(val states: MutableList<ExtractedState> = mutableListOf())

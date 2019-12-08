@@ -1,3 +1,5 @@
+import java.nio.file.Path
+
 object Common {
 
     val states = mapOf(
@@ -53,4 +55,24 @@ object Common {
             "wisconsin" to "Wisconsin",
             "wyoming" to "Wyoming"
     )
+
+    fun keyToName(key: String): String{
+        return states[key]!!
+    }
+
+    fun nameToKey(name: String): String{
+        for(s in states){
+            if(s.value == name){
+                return s.key
+            }
+        }
+
+        return ""
+    }
+}
+data class State(val key: String, val name: String)
+data class Usa(val states: List<State>)
+fun main() {
+    val data = Usa(Common.states.map { State(it.key, it.value) })
+    data.saveTo(Path.of("download","usa.json").toString())
 }

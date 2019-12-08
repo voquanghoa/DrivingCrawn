@@ -4,9 +4,14 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.lang.Exception
 import java.net.URL
+import java.nio.file.Path
 import java.util.*
 
 const val BufferSize = 10 * 1024
+
+fun String.downloadRaw(to: String){
+    File(to).writeBytes(downloadAsBytes())
+}
 
 fun String.downloadAsBytes(): ByteArray{
     val url = URL(this)
@@ -42,11 +47,17 @@ fun String.readFile(): String{
     return File(this).readText()
 }
 
-fun String.createFolderIfNotExist() {
+fun String.createFolderIfNotExist() : String{
     val file = File(this)
     if (!file.exists()) {
+        file.parent?.createFolderIfNotExist()
         file.mkdir()
     }
+    return this
+}
+
+fun Path.createFolderIfNotExist() : String{
+    return this.toString().createFolderIfNotExist()
 }
 
 fun String.fileExist(): Boolean{
@@ -75,9 +86,25 @@ fun String.toSlug() = toLowerCase()
         .joinToString("-")
         .replace("-+".toRegex(), "-")
 
+fun String.fileNameFromUrl() = this.substring(this.indexOfLast { it == '/' } + 1)
+
 fun Any.saveTo(path: String){
     val json = Gson().toJson(this)
     File(path).writeText(json)
+}
+
+fun String.writeTo(path: String){
+    File(path).writeText(this)
+}
+
+fun String.copyChildrenTo(destination: String, extension: String){
+    val list = File(this).listFiles()
+
+    for(x in list){
+        if(x.name.endsWith(extension)){
+            x.copyTo(Path.of(destination, x.name).toFile())
+        }
+    }
 }
 
 fun newGuid() = UUID.randomUUID().toString().replace("-", "")
